@@ -63,7 +63,7 @@ impl Gltf {
         }
 
         let formats = self.get_formats(compression_format);
-        let compressors = self.get_compressors(backend);
+        let compressors = self.get_compressors(backend.clone());
 
         let gltf_root = read_gltf_to_json(&self.file_path);
         let mut gltf_roots = vec![gltf_root; formats.len()];
@@ -128,7 +128,7 @@ impl Gltf {
                             progress_bar.inc(1);
                             continue;
                         }
-                        if let Err(e) = compressors[&format.backend().unwrap()].compress(
+                        if let Err(e) = compressors[&backend].compress(
                             &working_dir,
                             src_path,
                             &dst_path,
